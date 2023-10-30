@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 import random
 from flask import Flask, render_template, request, redirect, url_for, send_file
-from flasgger import Swagger, swag_from
+#from flasgger import Swagger, swag_from
 
 from PyPDF2 import PdfReader, PdfWriter
 
