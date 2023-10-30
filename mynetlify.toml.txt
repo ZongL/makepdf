@@ -1,5 +1,5 @@
-[build]
-  publish = "/templates/"
-  command = "echo 'default context'"
-  command = "python pdf_dev.py"
+#[build]
+  #publish = "/templates/"
+  #command = "echo 'default context'"
+  #command = "python pdf_dev.py"
   
