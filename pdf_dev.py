@@ -8,7 +8,7 @@ from PyPDF2 import PdfReader, PdfWriter
 import os
 
 app = Flask(__name__)
-swagger = Swagger(app)
+#swagger = Swagger(app)
 
 '''
 @app.route('/', methods=['GET', 'POST'])
