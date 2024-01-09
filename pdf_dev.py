@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 import random
 from flask import Flask, render_template, request, redirect, url_for, send_file
-#from flasgger import Swagger, swag_from
+from flasgger import Swagger, swag_from
 
 from PyPDF2 import PdfReader, PdfWriter
 
@@ -36,7 +36,7 @@ def hello0():
 
 @app.route('/')
 def index():
-    project_path = 'D:/python_dev/pdf_web'
+    project_path = '/app'
     file_tree = generate_file_tree(project_path)
     return render_template('index.html', file_tree=file_tree)
 
@@ -80,13 +80,15 @@ def PDF_delete(paths,index):
 @app.route('/merge_pdfs', methods=['POST'])
 def merge_pdfs():
     pdf_files = request.files.getlist('pdf_files')
-
     pdf_writer = PdfWriter()
     for pdf_file in pdf_files:
-        pdf_reader = PdfReader(pdf_file)
-        for page in range(len(pdf_reader.pages)):
-            # Add each page to the writer object
-            pdf_writer.add_page(pdf_reader.pages[page])
+        if pdf_file and pdf_file.filename:
+            print("Processing file:", pdf_file.filename)
+            #pdf_stream = pdf_file.stream
+            pdf_reader = PdfReader(pdf_file)
+            for page in range(len(pdf_reader.pages)):
+                # Add each page to the writer object
+                pdf_writer.add_page(pdf_reader.pages[page])
     # Write out the merged PDF
     merged_pdf_path = 'merged.pdf'
     with open(merged_pdf_path, 'wb') as output_pdf:
@@ -123,13 +125,6 @@ def page_rotation(old_file, new_file):
     with open(new_file, 'wb') as f:
         pdf_writer.write(f)
 
-
-
-
 if __name__ == '__main__':
 
-    #paths = ['2.pdf', '1.pdf']
-    #merge_pdfs(paths, output='merged2.pdf')
-
-    app.run(debug=False)
-#http://172.22.188.77:5000/apidocs/
+    app.run(debug=True, host='0.0.0.0')
