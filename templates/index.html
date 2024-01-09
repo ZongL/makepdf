@@ -21,12 +21,13 @@
             </li>
         {% endfor %}
     </ul>
-    <form action="/merge_pdfs" method="POST" enctype="multipart/form-data">
-        <h2>上传PDF文件：</h2>
-        <input type="file" name="pdf_files" multiple>
-        <br>
-        <input type="submit" value="合并PDF">
-    </form>
+<form action="/merge_pdfs" method="POST" enctype="multipart/form-data">
+    <h2>上传PDF文件：</h2>
+    <label for="pdf_files">选择文件：</label>
+    <input type="file" name="pdf_files" id="pdf_files" multiple>
+    <br>
+    <input type="submit" value="合并PDF" class="btn btn-primary">
+</form>
     <h2>下载合并后的PDF：</h2>
     <a href="/download_merged_pdf" class="btn btn-primary" role="button" download>下载合并后的PDF</a>
 </body>
