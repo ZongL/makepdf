@@ -4,7 +4,8 @@ from flask import Flask, render_template, request, redirect, url_for, send_file
 from flasgger import Swagger, swag_from
 
 from PyPDF2 import PdfReader, PdfWriter
-
+# 在导入的部分添加新库
+from flask import jsonify
 import os
 
 app = Flask(__name__)
@@ -43,9 +44,13 @@ def index():
 
 @app.route('/download_merged_pdf')
 def download_merged_pdf():
-    merged_pdf_path = 'merged.pdf'  # 合并后的PDF文件路径
+    merged_pdf_path = 'merged_done.pdf'  # 合并后的PDF文件路径
     return send_file(merged_pdf_path, as_attachment=True)
 
+@app.route('/download_deleted_pdf')
+def download_deleted_pdf():
+    modified_pdf_path = 'deleted_pages_done.pdf'  # 你之前在 PDF_delete 函数中定义的新生成的 PDF 文件路径
+    return send_file(modified_pdf_path, as_attachment=True)
 
 def generate_file_tree(path):
     file_tree = []
@@ -64,6 +69,20 @@ def generate_file_tree(path):
     return file_tree
 
 
+
+# ...
+
+@app.route('/delete_pages', methods=['POST'])
+def delete_pages():
+    pdf_path = request.files['pdf_file_tobedeleted']  # 获取要删除页面的PDF文件路径
+    print(pdf_path)
+    pages_to_delete = list(map(int, request.form.getlist('pages_to_delete')))  # 获取要删除的页码列表
+    PDF_delete(pdf_path, pages_to_delete)  # 调用删除页面的函数
+    return redirect(url_for('index'))
+
+# ...
+
+
 def PDF_delete(paths,index):
     #参数是一个整数列表，列表里是要删除的页码
     output = PdfWriter()  # 声明一个用于输出PDF的实例
@@ -73,7 +92,7 @@ def PDF_delete(paths,index):
         if (i+1) in index:
             continue  # 待删除的页面
         output.add_page(input1.pages[i])  # 读取PDF的第i页，添加到输出Output实例中
-    outputStream = open('newfile.pdf', "wb")
+    outputStream = open('deleted_pages_done.pdf', "wb")
     output.write(outputStream)  # 把编辑后的文档保存到本地
 
 
@@ -90,7 +109,7 @@ def merge_pdfs():
                 # Add each page to the writer object
                 pdf_writer.add_page(pdf_reader.pages[page])
     # Write out the merged PDF
-    merged_pdf_path = 'merged.pdf'
+    merged_pdf_path = 'merged_done.pdf'
     with open(merged_pdf_path, 'wb') as output_pdf:
         pdf_writer.write(output_pdf)
 
