@@ -2,33 +2,73 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PDF合并工具</title>
+    <title>PDF处理工具</title>
+    <style>
+        /* 添加一些样式来创建实线框 */
+        .function-block {
+            border: 1px solid #000;
+            margin-bottom: 20px;
+            padding: 10px;
+            max-width: 600px;  /* 设置最大宽度 */
+            width: 100%;  /* 让宽度占满父容器 */
+            box-sizing: border-box;  /* 包含边框和内边距在内的总宽度 */
+        }
+    </style>
 </head>
 <body>
-    <h1>PDF合并工具</h1>
-    <h2>项目文件树：</h2>
-    <ul>
-        {% for root_dir in file_tree %}
-            <li>
-                {{ root_dir['name'] }}
-                <ul>
-                    {% for item in root_dir['children'] %}
-                        <li>
-                            {{ item['name'] }} ({{ item['type'] }})
-                        </li>
-                    {% endfor %}
-                </ul>
-            </li>
-        {% endfor %}
-    </ul>
-<form action="/merge_pdfs" method="POST" enctype="multipart/form-data">
-    <h2>上传PDF文件：</h2>
-    <label for="pdf_files">选择文件：</label>
-    <input type="file" name="pdf_files" id="pdf_files" multiple>
-    <br>
-    <input type="submit" value="合并PDF" class="btn btn-primary">
-</form>
-    <h2>下载合并后的PDF：</h2>
-    <a href="/download_merged_pdf" class="btn btn-primary" role="button" download>下载合并后的PDF</a>
+    <h1>PDF处理工具</h1>
+
+    <!-- 第一块功能：展示文件树 -->
+    <div class="function-block">
+        <h2>项目文件树：</h2>
+        <ul>
+            {% for root_dir in file_tree %}
+                <li>
+                    {{ root_dir['name'] }}
+                    <ul>
+                        {% for item in root_dir['children'] %}
+                            <li>
+                                {{ item['name'] }} ({{ item['type'] }})
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- 第二块功能：合并上传的pdf -->
+    <div class="function-block">
+        <form action="/merge_pdfs" method="POST" enctype="multipart/form-data">
+            <h2>上传要合并的PDF文件：</h2>
+            <label for="pdf_files">选择文件：</label>
+            <input type="file" name="pdf_files" id="pdf_files" multiple>
+            <br>
+            <input type="submit" value="合并PDF" class="btn btn-primary">
+        </form>
+        <h2>下载合并后的PDF：</h2>
+        <a href="/download_merged_pdf" class="btn btn-primary" role="button" download>下载合并后的PDF</a>
+    </div>
+
+    <!-- 第三块功能：删除pdf的某些page -->
+    <div class="function-block">
+        <form action="/delete_pages" method="POST" enctype="multipart/form-data">
+            <h2>删除PDF页面：</h2>
+            <label for="pdf_file_tobedeleted">选择文件：</label>
+            <input type="file" name="pdf_file_tobedeleted" id="pdf_file_tobedeleted">
+            <br>
+            <label for="pages_to_delete">要删除的页码（逗号分隔）：</label>
+            <input type="text" name="pages_to_delete" id="pages_to_delete">
+            <br>
+            <input type="submit" value="删除页面" class="btn btn-primary">
+        </form>
+        <h2>下载删除页面后的PDF：</h2>
+        <a href="{{ url_for('download_deleted_pdf') }}" class="btn btn-primary" role="button" download>下载删除页面后的PDF</a>
+    </div>
+
+    <!-- 作者信息 -->
+    <footer>
+        <p>Created by Andy,zong</p>
+    </footer>
 </body>
 </html>
