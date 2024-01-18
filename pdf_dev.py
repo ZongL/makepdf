@@ -9,31 +9,8 @@ from flask import jsonify
 import os
 
 app = Flask(__name__)
-#swagger = Swagger(app)
+swagger = Swagger(app, template_file='swagger.yml')
 
-'''
-@app.route('/', methods=['GET', 'POST'])
-@swag_from('swagger.yml')  # 指定Swagger文档的YAML文件
-def hello0():
-    """
-    This is an example API endpoint.
-
-    It returns a JSON response with a "text" key.
-
-    ---
-    responses:
-      200:
-        description: A JSON object with the "text" key.
-        schema:
-          type: object
-          properties:
-            text:
-              type: string
-              example: Hello zongliang BotUser test
-    """
-    return
-    {"text":"Hello zongliang BotUser test "}
-'''
 
 @app.route('/')
 def index():
@@ -73,6 +50,7 @@ def generate_file_tree(path):
 # ...
 
 @app.route('/delete_pages', methods=['POST'])
+@swag_from('swagger.yml')  # Add this line for Swagger documentation
 def delete_pages():
     pdf_path = request.files['pdf_file_tobedeleted']  # 获取要删除页面的PDF文件路径
     print(pdf_path)
@@ -97,6 +75,7 @@ def PDF_delete(paths,index):
 
 
 @app.route('/merge_pdfs', methods=['POST'])
+@swag_from('swagger.yml')  # Add this line for Swagger documentation
 def merge_pdfs():
     pdf_files = request.files.getlist('pdf_files')
     pdf_writer = PdfWriter()
