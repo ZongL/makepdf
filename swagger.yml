@@ -1,33 +1,46 @@
 swagger: '2.0'
 info:
-  title: My API
-  description: Example API using Flask and Flasgger
+  title: 'PDF Manipulation API'
+  description: 'API for manipulating PDF files'
   version: '1.0'
 paths:
-  /:
-    get:
-      tags:
-        - Root
-      summary: Root endpoint
-      description: Returns a JSON response with a "text" key.
-      responses:
-        '200':
-          description: Successful response
-          schema:
-            $ref: '#/definitions/Response'
+  /delete_pages:
     post:
       tags:
-        - Root
-      summary: Root endpoint
-      description: Returns a JSON response with a "text" key.
+        - 'PDF Manipulation'
+      description: 'Delete specific pages from a PDF file'
+      consumes:
+        - 'multipart/form-data'
+      parameters:
+        - name: 'pdf_file_tobedeleted'
+          in: 'formData'
+          type: 'file'
+          required: true
+          description: 'PDF file to be processed'
+        - name: 'pages_to_delete'
+          in: 'formData'
+          type: 'array'
+          items:
+            type: 'integer'
+          required: true
+          description: 'List of page numbers to delete'
       responses:
         '200':
-          description: Successful response
-          schema:
-            $ref: '#/definitions/Response'
-definitions:
-  Response:
-    type: object
-    properties:
-      text:
-        type: string
+          description: 'PDF pages deleted successfully'
+
+  /merge_pdfs:
+    post:
+      tags:
+        - 'PDF Manipulation'
+      description: 'Merge multiple PDF files into one'
+      consumes:
+        - 'multipart/form-data'
+      parameters:
+        - name: 'pdf_files'
+          in: 'formData'
+          type: 'file'
+          required: true
+          description: 'List of PDF files to be merged'
+      responses:
+        '200':
+          description: 'PDF files merged successfully'
