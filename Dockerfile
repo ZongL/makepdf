@@ -1,6 +1,7 @@
 # 使用官方的 Python 镜像
 #FROM python:3.9    build result >=1 GB
-FROM python:3.9-alpine   #buld result >=86 MB
+#buld result >=86 MB
+FROM python:3.9-alpine
 # 设置工作目录
 WORKDIR /app
 
