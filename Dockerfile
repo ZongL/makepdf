@@ -2,6 +2,7 @@
 #FROM python:3.9    build result >=1 GB
 #buld result >=86 MB
 FROM python:3.9-alpine
+LABEL org.opencontainers.image.source="https://github.com/ZongL/makepdf"
 # 设置工作目录
 WORKDIR /app
 
