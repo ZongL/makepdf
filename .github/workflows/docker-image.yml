@@ -15,4 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag mypdfweb:$(date +%s)
+      run: docker build . --file Dockerfile --tag ghcr.io/ZongL/mypdfweb:latest
+
+    - name：Push Doker image to Cr
+      run: docker push ghcr.io/ZongL/mypdfweb:latest
