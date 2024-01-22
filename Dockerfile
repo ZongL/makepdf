@@ -1,8 +1,6 @@
-# 使用官方的 Python 镜像
-#FROM python:3.9    build result >=1 GB
-#buld result >=86 MB
+# 使用官方的 Python 镜像 build result >=1 GB result >=86 MB
 FROM python:3.9-alpine
-LABEL org.opencontainers.image.source="https://github.com/ZongL/makepdf"
+LABEL org.opencontainers.image.source="https://github.com/zongl/makepdf"
 # 设置工作目录
 WORKDIR /app
 
