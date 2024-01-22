@@ -53,8 +53,10 @@ def generate_file_tree(path):
 @swag_from('swagger.yml')  # Add this line for Swagger documentation
 def delete_pages():
     pdf_path = request.files['pdf_file_tobedeleted']  # 获取要删除页面的PDF文件路径
-    print(pdf_path)
-    pages_to_delete = list(map(int, request.form.getlist('pages_to_delete')))  # 获取要删除的页码列表
+    #print(pdf_path)
+    pages_to_delete_str = request.form.get('pages_to_delete', '')  # 获取用户输入的页码字符串
+    #print(pages_to_delete_str)
+    pages_to_delete = [int(page) for page in pages_to_delete_str.split(',') if page.strip().isdigit()] # 使用 split(',') 分割输入的页码字符串，然后使用 list comprehension 转换为整数列表
     PDF_delete(pdf_path, pages_to_delete)  # 调用删除页面的函数
     return redirect(url_for('index'))
 
@@ -91,7 +93,6 @@ def merge_pdfs():
     merged_pdf_path = 'merged_done.pdf'
     with open(merged_pdf_path, 'wb') as output_pdf:
         pdf_writer.write(output_pdf)
-
     return redirect(url_for('index'))
 
 def page_rotation(old_file, new_file):
