@@ -21,6 +21,6 @@ jobs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.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 }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     - name: Push Doker image to Cr
       run: docker push ghcr.io/zongl/mypdfweb:latest
